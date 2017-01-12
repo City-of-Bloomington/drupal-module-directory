@@ -1,0 +1,18 @@
+<?php
+/**
+ * @copyright 2017 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ */
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * @implements hook_help()
+ */
+function directory_help($route_name, RouteMatchInterface $route_match)
+{
+    switch ($route_name) {
+        case 'help.page.directory':
+            return "<h2>Directory Help</h2>";
+        break;
+    }
+}

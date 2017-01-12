@@ -13,7 +13,7 @@ class DirectoryController extends ControllerBase
     {
         return [
             '#type' => 'markup',
-            '#markup' => "<h2>Staff</h2>";
+            '#markup' => "<h2>Staff</h2>"
         ];
     }
 }
