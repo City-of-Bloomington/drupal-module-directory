@@ -1,0 +1,5 @@
+name: Directory
+description: Integration with Directory web application
+package: COB
+type: module
+core: 8.x
