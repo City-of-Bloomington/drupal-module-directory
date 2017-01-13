@@ -11,9 +11,15 @@ class DirectoryController extends ControllerBase
 {
     public function staff()
     {
+        $query = \Drupal::entityQuery('node')
+                 ->condition('status', 1)
+                 ->condition('type', 'department');
+        $nids = $query->execute();
+        $departments = \Drupal::entityTypeManager()->getStorage('node')->loadMultiple($nids);
+
         return [
-            '#type' => 'markup',
-            '#markup' => "<h2>Staff</h2>"
+            '#theme'       => 'directory_staff',
+            '#departments' => $departments
         ];
     }
 }

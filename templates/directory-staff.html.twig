@@ -1,0 +1,45 @@
+<h2>Staff</h2>
+{% for department in departments %}
+<section>
+    <header>
+        <h1>{{ department.getTitle() }}</h1>
+    </header>
+    <div class="departmentInfo">
+        <dl>{% if department.directory_info.address %}
+            <dt>Address</dt>
+            <dd>{{ department.directory_info.address }}</dd>
+            {% endif %}
+
+            {% if  department.directory_info.office %}
+            <dt>Office</dt>
+            <dd>{{ department.directory_info.office }}</dd>
+            {% endif %}
+
+            {% if department.directory_info.email %}
+            <dt>Email</dt>
+            <dd>{{ department.directory_info.email }}</dd>
+            {% endif %}
+        </dl>
+    </div>
+    {% if department.directory_info.people %}
+    <div class="departmentStaff">
+        <table>
+            <tbody>
+                {% for person in department.directory_info.people %}
+                <tr><td>{% if person.displayName %}
+                        {{ person.displayName }}
+                        {% else %}
+                        {{ person.firstname }} {{ person.lastname }}
+                        {% endif %}
+                        <span class="title">{{ person.title }}</span>
+                    </td>
+                    <td>{{ person.email }}</td>
+                    <td>{{ person.pager }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+</section>
+{% endfor %}
