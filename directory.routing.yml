@@ -1,7 +1,7 @@
 directory.directory:
   path: 'contact/directory'
   defaults:
-    _controller: '\Drupal\directory\Controller\DirectoryController::staff'
+    _controller: '\Drupal\directory\Controller\DirectoryController::directory'
     _title: 'Staff Directory'
   requirements:
     _permission: 'access content'

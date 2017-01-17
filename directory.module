@@ -25,10 +25,11 @@ function directory_help($route_name, RouteMatchInterface $route_match)
 function directory_theme($existing, $type, $theme, $path)
 {
     return [
+        'directory_directory' => [
+            'variables' => ['departments' => []]
+        ],
         'directory_staff' => [
-            'variables' => [
-                'departments' => []
-            ]
+            'variables' => ['department' => null]
         ]
     ];
 }
@@ -42,7 +43,7 @@ function directory_theme($existing, $type, $theme, $path)
  * @implements template_preprocess_HOOK()
  * @see https://api.drupal.org/api/drupal/core!lib!Drupal!Core!Render!theme.api.php/group/themeable/8.2.x
  */
-function template_preprocess_directory_staff(&$vars)
+function template_preprocess_directory_directory(&$vars)
 {
     foreach ($vars['departments'] as $i => $d) {
         if ($d->hasField( 'field_directory_dn')) {

@@ -9,7 +9,7 @@ use Drupal\Core\Controller\ControllerBase;
 
 class DirectoryController extends ControllerBase
 {
-    public function staff()
+    public function directory()
     {
         $query = \Drupal::entityQuery('node')
                  ->condition('status', 1)
@@ -18,7 +18,7 @@ class DirectoryController extends ControllerBase
         $departments = \Drupal::entityTypeManager()->getStorage('node')->loadMultiple($nids);
 
         return [
-            '#theme'       => 'directory_staff',
+            '#theme'       => 'directory_directory',
             '#departments' => $departments
         ];
     }
