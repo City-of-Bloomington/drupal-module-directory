@@ -27,9 +27,15 @@ class StaffBlock extends BlockBase implements BlockPluginInterface
      */
     public function build()
     {
-        $node = $this->getContextValue('node');
-        if ($node->hasField( 'field_directory_dn')) {
-            $dn = $node->get('field_directory_dn')->value;
+        $config = $this->getConfiguration();
+        $node   = $this->getContextValue('node');
+
+        $fieldname = !empty($config['fieldname'])
+                          ? $config['fieldname']
+                          : 'field_directory_dn';
+
+        if ($node->hasField( $fieldname)) {
+            $dn = $node->get($fieldname)->value;
             if ($dn) {
                 $json = DirectoryService::department_info($dn);
 
@@ -39,5 +45,30 @@ class StaffBlock extends BlockBase implements BlockPluginInterface
                 ];
             }
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function blockForm($form, FormStateInterface $form_state)
+    {
+        $form   = parent::blockForm($form, $form_state);
+        $config = $this->getConfiguration();
+
+        $form['staff_block_fieldname'] = [
+            '#type' => 'textfield',
+            '#title' => 'Fieldname',
+            '#description' => 'Name of the node field that contains the Directory DN',
+            '#default_value' => isset($config['fieldname']) ? $config['fieldname'] : ''
+        ];
+        return $form;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function blockSubmit($form, FormStateInterface $form_state)
+    {
+        $this->configuration['fieldname'] = $form_state->getValue('staff_block_fieldname');
     }
 }
