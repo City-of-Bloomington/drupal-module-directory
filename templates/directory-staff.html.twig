@@ -1,23 +1,28 @@
-<section>
-    <header>
-        <h1>Staff</h1>
-    </header>
-    <div class="departmentStaff">
-        <table>
-            <tbody>
-                {% for person in department.people %}
-                <tr><td>{% if person.displayName %}
-                        {{ person.displayName }}
-                        {% else %}
-                        {{ person.firstname }} {{ person.lastname }}
-                        {% endif %}
-                        <span class="title">{{ person.title }}</span>
-                    </td>
-                    <td>{{ person.email }}</td>
-                    <td>{{ person.pager }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+<div class="departmentStaff">
+    {% for person in department.people %}
+    <div>
+        <h3>{% if person.displayName %}
+            {{ person.displayName }}
+            {% else %}
+            {{ person.firstname }} {{ person.lastname }}
+            {% endif %}
+        </h3>
+        <dl>{% if person.title %}
+            <dt>Title</dt>
+            <dd>{{ person.title }}</dd>
+            {% endif %}
+            {% if person.email %}
+            <dt>Email</dt>
+            <dd><a href="mailto:{{ person.email }}">{{ person.email }}</a></dd>
+            {% endif %}
+            {% if person.pager %}
+            <dt>Phone</dt>
+            <dd><a href="tel:{{ person.pager }}" class="phone" title="Phone">
+                    {{ person.pager }}
+                </a>
+            </dd>
+            {% endif %}
+        </dl>
     </div>
-</section>
+    {% endfor %}
+</div>
