@@ -9,6 +9,12 @@ use Drupal\Core\Site\Settings;
 
 class DirectoryService
 {
+    private static function doJsonQuery($url)
+    {
+        $client   = \Drupal::httpClient();
+        $response = $client->get($url);
+        return json_decode($response->getBody(), true);
+    }
     /**
      * Returns contact information for a department
      *
@@ -21,12 +27,10 @@ class DirectoryService
      */
     public static function department_info($dn)
     {
-        $DIRECTORY = Settings::get('directory_url');
-        $url = $DIRECTORY.'/departments/view?format=json;dn='.urlencode($dn);
-
-        $client   = \Drupal::httpClient();
-        $response = $client->get($url);
-        return json_decode($response->getBody(), true);
+        $config    = \Drupal::config('directory.settings');
+        $DIRECTORY = $config->get('directory_url');
+        $url       = $DIRECTORY.'/departments/view?format=json;dn='.urlencode($dn);
+        return self::doJsonQuery($url);
     }
 
     /**
@@ -35,11 +39,9 @@ class DirectoryService
      */
     function person_info($username)
     {
-        $DIRECTORY = Settings::get('directory_url');
-        $url = $DIRECTORY.'/people/view?format=json;username='.$username;
-
-        $client = \Drupal::httpClient();
-        $response = $client->get($url);
-        return json_decode($response->getBody(), true);
+        $config    = \Drupal::config('directory.settings');
+        $DIRECTORY = $config->get('directory_url');
+        $url       = $DIRECTORY.'/people/view?format=json;username='.$username;
+        return self::doJsonQuery($url);
     }
 }
