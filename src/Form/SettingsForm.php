@@ -35,7 +35,7 @@ class SettingsForm extends ConfigFormBase
 
         $form['directory_url'] = [
             '#type'          => 'textfield',
-            '#title'         => 'CKAN Url',
+            '#title'         => 'Directory Url',
             '#default_value' => $config->get('directory_url')
         ];
 
