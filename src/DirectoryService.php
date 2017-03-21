@@ -26,7 +26,7 @@ class DirectoryService
 
         $client   = \Drupal::httpClient();
         $response = $client->get($url);
-        return json_decode($response->getBody());
+        return json_decode($response->getBody(), true);
     }
 
     /**
@@ -40,6 +40,6 @@ class DirectoryService
 
         $client = \Drupal::httpClient();
         $response = $client->get($url);
-        return json_decode($response->getBody());
+        return json_decode($response->getBody(), true);
     }
 }
