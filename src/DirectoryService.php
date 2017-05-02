@@ -12,8 +12,13 @@ class DirectoryService
     private static function doJsonQuery($url)
     {
         $client   = \Drupal::httpClient();
-        $response = $client->get($url);
-        return json_decode($response->getBody(), true);
+        try {
+            $response = $client->get($url);
+            return json_decode($response->getBody(), true);
+        }
+        catch (\Exception $e) {
+            return [];
+        }
     }
     /**
      * Returns contact information for a department
