@@ -1,7 +1,7 @@
 {% for person in department.people %}
 <div>
-    <h3>{% if person.displayName %}
-        {{ person.displayName }}
+    <h3>{% if person.displayname %}
+        {{ person.displayname }}
         {% else %}
         {{ person.firstname }} {{ person.lastname }}
         {% endif %}
