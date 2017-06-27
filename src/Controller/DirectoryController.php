@@ -13,7 +13,8 @@ class DirectoryController extends ControllerBase
     {
         $query = \Drupal::entityQuery('node')
                  ->condition('status', 1)
-                 ->condition('type', 'department');
+                 ->condition('type', 'department')
+                 ->sort('title');
         $nids = $query->execute();
         $departments = \Drupal::entityTypeManager()->getStorage('node')->loadMultiple($nids);
 
