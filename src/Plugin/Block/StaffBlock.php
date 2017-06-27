@@ -38,11 +38,12 @@ class StaffBlock extends BlockBase implements BlockPluginInterface
             $dn = $node->get($fieldname)->value;
             if ($dn) {
                 $json = DirectoryService::department_info($dn);
-
-                return [
-                    '#theme'      => 'directory_staff',
-                    '#department' => $json
-                ];
+                if (!empty($json['people'])) {
+                    return [
+                        '#theme'      => 'directory_staff',
+                        '#department' => $json
+                    ];
+                }
             }
         }
     }
