@@ -34,7 +34,7 @@ class DirectoryService
     {
         $config    = \Drupal::config('directory.settings');
         $DIRECTORY = $config->get('directory_url');
-        $url       = $DIRECTORY.'/departments/view?format=json;dn='.urlencode($dn);
+        $url       = $DIRECTORY.'/departments/view?promoted=1;format=json;dn='.urlencode($dn);
         return self::doJsonQuery($url);
     }
 
