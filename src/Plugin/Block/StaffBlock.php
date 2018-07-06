@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2017 City of Bloomington, Indiana
+ * @copyright 2017-2018 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  */
 namespace Drupal\directory\Plugin\Block;
@@ -16,7 +16,11 @@ use Drupal\Core\Form\FormStateInterface;
  *     id = "staff_block",
  *     admin_label = "Department Staff",
  *     context = {
- *         "node" = @ContextDefinition("entity:node")
+ *         "node" = @ContextDefinition(
+ *             "entity:node",
+ *             label = "Current Node",
+ *             required = FALSE
+ *         )
  *     }
  * )
  */
@@ -27,22 +31,27 @@ class StaffBlock extends BlockBase implements BlockPluginInterface
      */
     public function build()
     {
-        $config = $this->getConfiguration();
-        $node   = $this->getContextValue('node');
+        $node = $this->getContextValue('node');
+        if ($node) {
+            $config    = $this->getConfiguration();
+            $fieldname = !empty($config['fieldname'])
+                            ? $config['fieldname']
+                            : 'field_directory_dn';
 
-        $fieldname = !empty($config['fieldname'])
-                          ? $config['fieldname']
-                          : 'field_directory_dn';
-
-        if ($node->hasField( $fieldname)) {
-            $dn = $node->get($fieldname)->value;
-            if ($dn) {
-                $json = DirectoryService::department_info($dn);
-                if (!empty($json['people'])) {
-                    return [
-                        '#theme'      => 'directory_staff',
-                        '#department' => $json
-                    ];
+            if ($node->hasField( $fieldname)) {
+                $dn = $node->get($fieldname)->value;
+                if ($dn) {
+                    $json = DirectoryService::department_info($dn);
+                    if (!empty($json['people'])) {
+                        return [
+                            '#theme'      => 'directory_staff',
+                            '#department' => $json,
+                            '#cache'       => [
+                                'contexts' => ['route'],
+                                'max-age'  => 3600
+                            ]
+                        ];
+                    }
                 }
             }
         }
