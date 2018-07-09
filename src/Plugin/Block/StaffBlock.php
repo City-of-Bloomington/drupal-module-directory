@@ -9,7 +9,9 @@ use Drupal\directory\DirectoryService;
 
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Block\BlockPluginInterface;
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\node\Entity\Node;
 
 /**
  * @Block(
@@ -26,13 +28,15 @@ use Drupal\Core\Form\FormStateInterface;
  */
 class StaffBlock extends BlockBase implements BlockPluginInterface
 {
-    /**
-     * {@inheritdoc}
-     */
+    public function getCacheContexts()
+    {
+        return Cache::mergeContexts(parent::getCacheContexts(), ['url.path']);
+    }
+
     public function build()
     {
         $node = $this->getContextValue('node');
-        if ($node) {
+        if ($node && $node instanceof Node) {
             $config    = $this->getConfiguration();
             $fieldname = !empty($config['fieldname'])
                             ? $config['fieldname']
@@ -47,7 +51,6 @@ class StaffBlock extends BlockBase implements BlockPluginInterface
                             '#theme'      => 'directory_staff',
                             '#department' => $json,
                             '#cache'       => [
-                                'contexts' => ['route'],
                                 'max-age'  => 3600
                             ]
                         ];
