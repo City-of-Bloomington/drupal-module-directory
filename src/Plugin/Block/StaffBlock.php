@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2017-2018 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2017-2021 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 namespace Drupal\directory\Plugin\Block;
 
@@ -16,14 +16,7 @@ use Drupal\node\Entity\Node;
 /**
  * @Block(
  *     id = "staff_block",
- *     admin_label = "Department Staff",
- *     context = {
- *         "node" = @ContextDefinition(
- *             "entity:node",
- *             label = "Current Node",
- *             required = FALSE
- *         )
- *     }
+ *     admin_label = "Department Staff"
  * )
  */
 class StaffBlock extends BlockBase implements BlockPluginInterface
@@ -35,12 +28,10 @@ class StaffBlock extends BlockBase implements BlockPluginInterface
 
     public function build()
     {
-        $node = $this->getContextValue('node');
+        $node = \Drupal::routeMatch()->getParameter('node');
         if ($node && $node instanceof Node) {
             $config    = $this->getConfiguration();
-            $fieldname = !empty($config['fieldname'])
-                            ? $config['fieldname']
-                            : 'field_directory_dn';
+            $fieldname = !empty($config['fieldname']) ? $config['fieldname'] : 'field_directory_dn';
 
             if ($node->hasField( $fieldname)) {
                 $dn = $node->get($fieldname)->value;
