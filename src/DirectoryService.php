@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2017 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2017-2021 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 namespace Drupal\directory;
 
@@ -30,23 +30,29 @@ class DirectoryService
      * @param  string   $dn The DN for the department
      * @return stdClass     The JSON object from the response
      */
-    public static function department_info($dn)
+    public static function department_info(string $dn)
     {
         $config    = \Drupal::config('directory.settings');
         $DIRECTORY = $config->get('directory_url');
-        $url       = $DIRECTORY.'/departments/view?promoted=1;format=json;dn='.urlencode($dn);
+        $path      = self::pathForDn($dn);
+        $url       = $DIRECTORY."/departments$path?format=json;promoted=1";
         return self::doJsonQuery($url);
     }
 
-    /**
-     * @param  string   $username Username in ActiveDirectory
-     * @return stdClass           The JSON object from the response
-     */
-    function person_info($username)
+    public static function pathForDn(string $dn): string
     {
-        $config    = \Drupal::config('directory.settings');
-        $DIRECTORY = $config->get('directory_url');
-        $url       = $DIRECTORY.'/people/view?format=json;username='.$username;
-        return self::doJsonQuery($url);
+        $path = '';
+        preg_match_all("|OU=([^,]+),|", $dn, $matches);
+        if (count($matches[1]) > 1) {
+            // Matches will also include the OU=Departments,
+            // which we don't want to be part of the path.
+            array_pop($matches[1]);
+
+            foreach ($matches[1] as $name) {
+                $name = str_replace(' ', '_', strtolower($name));
+                $path = "/$name$path";
+            }
+        }
+        return $path;
     }
 }

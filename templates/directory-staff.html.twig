@@ -16,7 +16,7 @@
         {% endif %}
         {% if person.pager %}
         <dt>Phone</dt>
-        <dd><a href="tel:{{ person.pager }}" class="phone" title="Phone">
+        <dd><a href="tel:+1{{ person.pager|replace({'-':''}) }}" class="phone" title="Phone">
                 {{ person.pager }}
             </a>
         </dd>

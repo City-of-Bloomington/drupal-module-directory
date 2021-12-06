@@ -40,7 +40,7 @@
             {% endif %}
             <dd><a href="mailto:{{ person.email }}">{{ person.email }}</a>
                 {% if person.pager %}
-                <a href="tel:+1{{ person.pager|replace('/[^0-9]/', '') }}">{{ person.pager }}</a>
+                <a href="tel:+1{{ person.pager|replace({'-':''}) }}">{{ person.pager }}</a>
                 {% endif %}
             </dd>
             {% endfor %}
